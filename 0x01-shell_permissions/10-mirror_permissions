@@ -1,3 +1,2 @@
 #!/bin/bashe
-chmod 753 hello
-chmod 753 olleh
+chmod --reference=olleh hello
