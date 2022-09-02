@@ -1,2 +1,3 @@
-#!/bin/bash
-chgrp olleh 9-John_Doe
+#!/bin/bashe
+chmod 753 hello
+chmod 753 olleh
