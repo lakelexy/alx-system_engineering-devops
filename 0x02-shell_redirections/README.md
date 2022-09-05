@@ -1,1 +1,1 @@
-This folder is about shell redirection command
+this folder is about shell redirection
