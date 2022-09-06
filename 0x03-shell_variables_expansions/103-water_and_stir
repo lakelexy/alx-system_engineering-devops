@@ -1,2 +1,2 @@
 #!/bin/bash
-
+sum=$(echo $WATER $STIR2 | awk '{print $WATER + $STIR}') 
