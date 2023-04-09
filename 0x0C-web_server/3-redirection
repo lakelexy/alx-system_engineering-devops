@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
-#Editing the default config file
+#Configure a new Nginx server so that /redirect_me is redirecting to another page
 
-sudo sed -i '/server_name _;/a \	location /redirect_me {\n		return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n	}' /etc/nginx/sites-available/default
+sudo apt-get -y update
+sudo apt-get -y install nginx
+sudo ufw allow 'Nginx HTTP'
+echo "Hello World" | sudo tee /var/www/html/index
+sudo sed -i '/listen 80 default_server/a rewrite ^/redirect_me https:
+	    //www.youtube.com/ permanent;' /etc/nginx/sites-available/default
 sudo service nginx restart
