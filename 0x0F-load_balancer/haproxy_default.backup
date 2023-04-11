@@ -1,0 +1,15 @@
+
+defaults
+  mode http
+  timeout client 15s
+  timeout connect 10s
+  timeout server 15s
+  timeout http-request 10s
+frontend futuristic-design.tech-frontend
+    bind *:80
+    default_backend futuristic-design.backend
+backend futuristic-design.tech-backend
+    balance roundrobin
+    server 151666-web-01 100.25.14.118 check
+    server 151666-web-02 34.207.221.120 check
+
