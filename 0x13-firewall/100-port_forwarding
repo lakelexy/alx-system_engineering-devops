@@ -8,18 +8,10 @@
 #   ufw-before-forward
 #
 
-<<<<<<< HEAD
-=======
-## Section added to allow port 80 to forward to 8080
->>>>>>> ac62384256308b1c76e7746418f206183779eb10
 *nat
 :PREROUTING ACCEPT [0:0]
 -A PREROUTING -p tcp --dport 8080 -j REDIRECT --to-port 80
 COMMIT
-<<<<<<< HEAD
-=======
-# end of added section
->>>>>>> ac62384256308b1c76e7746418f206183779eb10
 
 # Don't delete these required lines, otherwise there will be errors
 *filter
