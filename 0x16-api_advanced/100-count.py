@@ -3,39 +3,50 @@
     Reddit API query
 """
 import requests
+after = None
 
 
-def count_words(subreddit, word_list, after=None, counts=None):
-    """
-       recursive function that queries the Reddit API, parses the title
-       of all hot articles, and prints a sorted count of given keywords
-       (case-insensitive, delimited by spaces. Javascript should count
-       as javascript, but java should not).
-    """
-    if counts is None:
-        counts = {}
-    if after is None:
-        url = f"https://www.reddit.com/r/{subreddit}/hot.json"
-    else:
-        url = f"https://www.reddit.com/r/{subreddit}/hot.json?after={after}"
-    headers = {"User-Agent": "Mozilla/5.0"}
-    response = requests.get(url, headers=headers)
+def count_worrds(subreddit, word_list):
+    """ I will insert this doc later """
+    my_list = recurse(subreddit)
+    my_dict = {}
+
+    if my_list:
+        for word in word_list:
+            my_dict[word] = 0
+
+        for title in my_list:
+            title_split = title.split(" ")
+
+            for iter in title_split:
+                for iter_split in word_list:
+                    if iter.lower() == iter_split.lower():
+                        my_dict[iter_split] += 1
+
+        for key, val in sorted(my_dict.items(),  key=lambda x: x[1],
+                               reverse=True):
+            if val != 0:
+                print("{}: {}".format(key, val))
+
+
+def recurse(subreddit, hot_list=[]):
+    """ I will also insert this doc later """
+    global after
+    headers = {'User-Agent': 'ledbag123'}
+    url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
+    parameters = {'after': after}
+    response = requests.get(url, headers=headers, allow_redirects=False,
+                            params=parameters)
     if response.status_code == 200:
-        data = response.json()
-        for item in data["data"]["children"]:
-            title = item["data"]["title"].lower()
-            for word in word_list:
-                if " " + word.lower() + " " in title:
-                    if word.lower() in counts:
-                        counts[word.lower()] += 1
-                    else:
-                        counts[word.lower()] = 1
-        after = data["data"]["after"]
-        if after is not None:
-            count_words(subreddit, word_list, after, counts)
-        else:
-            sorted_counts = sorted(counts.items(), key=lambda x: (-x[1], x[0]))
-            for word, count in sorted_counts:
-                print(f"{word}: {count}")
+        prox = response.json().get('data').get('after')
+
+        if prox is not None:
+            after = prox
+            recurse(subreddit, hot_list)
+        list_titles = response.json().get('data').get('children')
+
+        for title_ in list_titles:
+            hot_list.append(title_.get('data').get('title'))
+        return hot_list
     else:
-        print("Error:", response.status_code)
+        return None
